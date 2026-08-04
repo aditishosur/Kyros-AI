@@ -24,7 +24,7 @@ jobs:
         run: python data/generate_data.py
 
       - name: Run tests
-        run: pytest -q
+        run: python -m pytest -q
 
       - name: Import checks
         run: python -c "import backend.main; import frontend.app"
