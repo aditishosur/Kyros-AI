@@ -1,0 +1,14 @@
+services:
+  pulseops:
+    build: .
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    environment:
+      PULSEOPS_API_URL: http://localhost:8000
+    volumes:
+      - pulseops-data:/app/data
+
+volumes:
+  pulseops-data:
+

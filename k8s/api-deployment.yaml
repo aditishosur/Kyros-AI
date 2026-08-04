@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulseops-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pulseops-api
+  template:
+    metadata:
+      labels:
+        app: pulseops-api
+    spec:
+      containers:
+        - name: api
+          image: pulseops:latest
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn"]
+          args: ["backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: sqlite-data
+              mountPath: /app/data
+      volumes:
+        - name: sqlite-data
+          persistentVolumeClaim:
+            claimName: pulseops-sqlite-pvc
+

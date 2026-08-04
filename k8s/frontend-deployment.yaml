@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulseops-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pulseops-frontend
+  template:
+    metadata:
+      labels:
+        app: pulseops-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: pulseops:latest
+          imagePullPolicy: IfNotPresent
+          command: ["streamlit"]
+          args: ["run", "frontend/app.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
+          envFrom:
+            - configMapRef:
+                name: pulseops-config
+          ports:
+            - containerPort: 8501
+

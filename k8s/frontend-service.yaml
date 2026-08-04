@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulseops-frontend
+spec:
+  selector:
+    app: pulseops-frontend
+  ports:
+    - port: 8501
+      targetPort: 8501
+  type: NodePort
+
