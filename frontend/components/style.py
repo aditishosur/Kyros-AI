@@ -246,4 +246,3 @@ def risk_bar(score: float) -> str:
         <strong>{score:.0f}</strong>
     </div>
     """
-

@@ -77,10 +77,10 @@ def landing() -> None:
         """
         <div class="hero">
             <div>
-                <div class="eyebrow">PULSEOPS / Predictive API Intelligence</div>
+                <div class="eyebrow">KYROS / Predictive API Intelligence</div>
                 <div class="hero-title">Know what will happen to your APIs before they fail.</div>
                 <div class="hero-copy">
-                    PulseOps combines API observability, machine learning, anomaly detection,
+                    Kyros combines API observability, machine learning, anomaly detection,
                     explainable root-cause analysis and impact simulation into one operational
                     intelligence platform.
                 </div>
