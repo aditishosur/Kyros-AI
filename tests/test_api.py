@@ -1,18 +1,22 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from backend.main import app
 
 
-client = TestClient(app)
+@pytest.fixture
+def client():
+    with TestClient(app) as c:
+        yield c
 
 
-def test_health():
+def test_health(client):
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
 
 
-def test_api_crud():
+def test_api_crud(client):
     payload = {
         "name": "Billing API",
         "endpoint": "/billing-test",
@@ -33,7 +37,7 @@ def test_api_crud():
     assert deleted.status_code == 204
 
 
-def test_overview_and_api_analytics():
+def test_overview_and_api_analytics(client):
     overview = client.get("/analytics/overview")
     assert overview.status_code == 200
     body = overview.json()
@@ -45,7 +49,7 @@ def test_overview_and_api_analytics():
     assert detail.json()["metrics"]["risk_score"] >= 0
 
 
-def test_risk_root_cause_forecast_and_simulation():
+def test_risk_root_cause_forecast_and_simulation(client):
     overview = client.get("/analytics/overview").json()
     payments = next(api for api in overview["apis"] if api["endpoint"] == "/payments")
     api_id = payments["id"]

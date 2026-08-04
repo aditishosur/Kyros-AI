@@ -11,6 +11,11 @@ from backend.services.root_cause import root_cause
 from backend.services.simulation import run_simulation
 
 app = FastAPI(title="PulseOps API", version="1.0.0", description="Predictive API operations and performance intelligence.")
+
+from backend.database import Base, engine
+
+Base.metadata.create_all(bind=engine)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,7 +25,7 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-def startup() -> None:
+def startup():
     db = SessionLocal()
     try:
         init_db(db)
