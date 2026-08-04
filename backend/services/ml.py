@@ -118,7 +118,7 @@ def forecast(db: Session, api_id: int, horizon: int = 12) -> dict:
     db.commit()
     return {
         "api_id": api_id,
-        "historical": hourly.tail(48).assign(timestamp=lambda x: x["timestamp"].dt.isoformat()).to_dict(orient="records"),
+        "historical": hourly.tail(48).assign(timestamp=lambda x: x["timestamp"].apply(lambda t: t.isoformat())).to_dict(orient="records"),
         "forecast": forecast_rows,
         "summary": summary,
     }
@@ -134,5 +134,7 @@ def anomalies(db: Session, api_id: int) -> dict:
     hourly["anomaly"] = model.fit_predict(features) == -1
     return {
         "latest_is_anomaly": bool(hourly["anomaly"].iloc[-1]),
-        "anomalies": hourly[hourly["anomaly"]].assign(timestamp=lambda x: x["timestamp"].dt.isoformat()).tail(20).to_dict(orient="records"),
+        "anomalies": (
+    hourly[hourly["anomaly"]].assign(timestamp=lambda df: df["timestamp"].apply(lambda t: t.isoformat())).tail(20).to_dict(orient="records")
+),
     }
