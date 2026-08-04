@@ -1,4 +1,4 @@
-# Kyros
+# 🔌Kyros
 
 > **Predictive API Intelligence for Enterprise API Operations**
 
