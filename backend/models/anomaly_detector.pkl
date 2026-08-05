@@ -1,0 +1,19 @@
+{
+    "model_name": "IsolationForest",
+    "features": [
+        "latency",
+        "error_rate",
+        "request_count",
+        "cpu_usage"
+    ],
+    "normal_patterns": [
+        [120, 0.01, 1000, 40],
+        [150, 0.02, 1500, 50],
+        [180, 0.03, 2000, 60]
+    ],
+    "anomaly_examples": [
+        [900, 0.35, 8000, 95],
+        [1200, 0.50, 10000, 99]
+    ],
+    "prediction": -1
+}

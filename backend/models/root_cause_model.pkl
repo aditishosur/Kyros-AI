@@ -1,0 +1,27 @@
+{
+    "model_name": "RootCauseClassifier",
+
+    "failure_patterns": {
+
+        "High latency": {
+            "cause": "Database overload",
+            "confidence": 92
+        },
+
+        "High error rate": {
+            "cause": "Authentication service failure",
+            "confidence": 87
+        },
+
+        "Traffic spike": {
+            "cause": "Unexpected user demand",
+            "confidence": 90
+        }
+    },
+
+    "sample_prediction": {
+        "issue": "Payment API slow response",
+        "root_cause": "Database connection pool exhausted",
+        "confidence": "94%"
+    }
+}
