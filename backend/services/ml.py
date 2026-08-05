@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from backend import models
 from backend.services.analytics import logs_frame, recent_metrics
-from backend.services.risk import calculate_risk
+from backend.services.risk import calculate_risk+
 
 
 def _hourly(df: pd.DataFrame) -> pd.DataFrame:
