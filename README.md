@@ -1,4 +1,4 @@
-# 🔌Kyros
+# 🔌PulseOps
 
 > **Predictive API Intelligence for Enterprise API Operations**
 
