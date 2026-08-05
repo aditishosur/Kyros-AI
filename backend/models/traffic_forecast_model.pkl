@@ -1,0 +1,19 @@
+{
+    "model_name": "RandomForestRegressor",
+    "features": [
+        "requests_per_minute",
+        "response_time",
+        "error_rate",
+        "active_users"
+    ],
+    "sample_training_data": [
+        [1200, 120, 0.02, 500],
+        [1800, 150, 0.03, 700],
+        [2500, 220, 0.05, 1000],
+        [3200, 300, 0.08, 1500]
+    ],
+    "sample_prediction": {
+        "next_hour_requests": 4200,
+        "traffic_growth": "18%"
+    }
+}
