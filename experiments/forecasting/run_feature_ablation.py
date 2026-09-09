@@ -40,8 +40,8 @@ RANDOM_STATE = 42
 # contribution of lag_24.
 #
 FROZEN_RF_CONFIG = {
-    "n_estimators": 100,
-    "min_samples_leaf": 1,
+    "n_estimators": 200,
+    "min_samples_leaf": 2,
     "max_depth": None,
 }
 
@@ -284,6 +284,10 @@ def recursive_rf_forecast(
     """
     Generate recursive multi-step forecasts.
 
+    Each prediction uses a feature row whose timestamp matches
+    the timestamp being predicted. Features are constructed using
+    only observations available before that prediction timestamp.
+
     Generated predictions are appended to the working history,
     so future forecast steps do not use future actual values.
     """
@@ -316,10 +320,27 @@ def recursive_rf_forecast(
             + pd.Timedelta(hours=1)
         )
 
-        feature_history = make_features(
-            working
+        # Add a placeholder row for the timestamp being predicted.
+        # All lag and rolling features are shifted, so the NaN
+        # request_count is never used to predict itself.
+        feature_history = pd.concat(
+            [
+                working,
+                pd.DataFrame(
+                    {
+                        "timestamp": [next_timestamp],
+                        "request_count": [np.nan],
+                    }
+                ),
+            ],
+            ignore_index=True,
         )
 
+        feature_history = make_features(
+            feature_history
+        )
+
+        # The final row now corresponds to next_timestamp.
         latest = feature_history.iloc[-1]
 
         x = pd.DataFrame(
@@ -331,23 +352,27 @@ def recursive_rf_forecast(
             ]
         )
 
+        if x.isna().any().any():
+            raise ValueError(
+                "Insufficient history to construct forecasting "
+                "features for the next timestamp."
+            )
+
         prediction = float(
             model.predict(x)[0]
         )
 
         predictions.append(prediction)
 
+        # Append the generated prediction for the next
+        # recursive forecasting step.
         working = pd.concat(
             [
                 working,
                 pd.DataFrame(
                     {
-                        "timestamp": [
-                            next_timestamp
-                        ],
-                        "request_count": [
-                            prediction
-                        ],
+                        "timestamp": [next_timestamp],
+                        "request_count": [prediction],
                     }
                 ),
             ],

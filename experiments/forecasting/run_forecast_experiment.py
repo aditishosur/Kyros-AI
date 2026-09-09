@@ -287,7 +287,11 @@ def recursive_rf_forecast(
     """
     Generate recursive multi-step forecasts.
 
-    After each prediction, the prediction is appended to the
+    Each prediction uses a feature row whose timestamp matches
+    the timestamp being predicted. Features are constructed using
+    only observations available before that prediction timestamp.
+
+    After each prediction, the generated value is appended to the
     working history so later forecast steps use generated
     predictions rather than future actual values.
     """
@@ -320,12 +324,28 @@ def recursive_rf_forecast(
             + pd.Timedelta(hours=1)
         )
 
-        # Build features from the information available
-        # before the next prediction timestamp.
-        feature_history = make_features(
-            working
+        # Add a placeholder row for the timestamp being predicted.
+        # The lag/rolling features in make_features() are shifted,
+        # so this placeholder request_count is never used as an
+        # input feature for its own prediction.
+        feature_history = pd.concat(
+            [
+                working,
+                pd.DataFrame(
+                    {
+                        "timestamp": [next_timestamp],
+                        "request_count": [np.nan],
+                    }
+                ),
+            ],
+            ignore_index=True,
         )
 
+        feature_history = make_features(
+            feature_history
+        )
+
+        # The final row now corresponds to next_timestamp.
         latest = feature_history.iloc[-1]
 
         x = pd.DataFrame(
@@ -337,24 +357,27 @@ def recursive_rf_forecast(
             ]
         )
 
+        if x.isna().any().any():
+            raise ValueError(
+                "Insufficient history to construct forecasting "
+                "features for the next timestamp."
+            )
+
         prediction = float(
             model.predict(x)[0]
         )
 
         predictions.append(prediction)
 
-        # Append the generated prediction.
+        # Append the generated prediction so the next recursive
+        # step can use it as historical information.
         working = pd.concat(
             [
                 working,
                 pd.DataFrame(
                     {
-                        "timestamp": [
-                            next_timestamp
-                        ],
-                        "request_count": [
-                            prediction
-                        ],
+                        "timestamp": [next_timestamp],
+                        "request_count": [prediction],
                     }
                 ),
             ],
