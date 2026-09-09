@@ -1,0 +1,15 @@
+{
+  "dataset_name": "replace_with_selected_dataset",
+  "license_url": "replace_with_license_url",
+  "default_endpoint": "dataset_b_service",
+  "label_column": "replace_or_remove_if_no_labels",
+  "columns": {
+    "source_timestamp_column": "timestamp",
+    "source_request_count_column": "request_count",
+    "source_latency_column": "response_time_ms",
+    "source_error_rate_column": "error_rate",
+    "source_cpu_column": "cpu_usage",
+    "source_db_latency_column": "db_latency_ms",
+    "source_label_column": "event_label"
+  }
+}

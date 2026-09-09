@@ -1,0 +1,22 @@
+{
+  "run_name": "controlled_anomaly_evaluation",
+  "dataset_run_id": "controlled_dataset_v1",
+  "base_seed": 42,
+  "episode_hours": 168,
+  "warning_start_hour": 96,
+  "event_onset_hour": 108,
+  "event_end_hour": 132,
+  "train_normal_seeds": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+  "validation_normal_seeds": [30, 31, 32, 33, 34],
+  "test_normal_seeds": [50, 51, 52, 53, 54],
+  "validation_event_seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109],
+  "test_event_seeds": [200, 201, 202, 203, 204, 205, 206, 207, 208, 209],
+  "validation_intensities": [0.4, 0.8],
+  "test_intensities": [1.2, 1.6],
+  "endpoints": ["/payments", "/orders", "/inventory"],
+  "features": ["request_count", "response_time_ms", "error_rate", "cpu_usage", "db_latency_ms"],
+  "iforest_contamination": 0.02,
+  "false_alert_budget_per_100_normal_hours": 1.0,
+  "reactive_latency_ms": 500.0,
+  "reactive_error_rate_pct": 5.0
+}
