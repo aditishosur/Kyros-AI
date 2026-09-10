@@ -282,7 +282,7 @@ For these reasons, an independent real-world Dataset B is required before making
 ### Primary corrected forecasting run
 
 ```text
-results/20260909T154314Z/
+results/20260910T174657Z/
 ```
 
 Contains:
@@ -296,7 +296,7 @@ Contains:
 ### Corrected feature ablation
 
 ```text
-results/20260909T155053Z/
+results/20260910T175101Z/
 ```
 
 Contains:
@@ -322,10 +322,12 @@ results/forecast_analysis/figures/
 
 Contains:
 
-- `figure_1_mae_by_horizon.png`
-- `figure_2_rf_mae_endpoint_horizon.png`
-- `figure_3_rf_error_over_time.png`
-- `figure_4_lag24_ablation.png`
+figure_1_mae_by_horizon.png
+figure_2_rf_mae_endpoint_horizon.png
+figure_3_actual_vs_rf_forecast.png
+figure_4_rf_horizon_error.png
+figure_5_rf_error_over_time.png
+figure_6_lag24_ablation.png
 
 ### Implementation
 
@@ -344,13 +346,13 @@ tests/test_forecasting.py
 The targeted forecasting tests pass:
 
 ```text
-2 passed
+3 passed
 ```
 
 The full repository test suite passes:
 
 ```text
-6 passed
+7 passed
 ```
 
 ---
