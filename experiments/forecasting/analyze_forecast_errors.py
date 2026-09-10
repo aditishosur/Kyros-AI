@@ -10,13 +10,8 @@ import pandas as pd
 # CONFIGURATION
 # ============================================================
 
-ORIGINAL_RUN = Path(
-    "results/20260909T154314Z"
-)
-
-ABLATION_RUN = Path(
-    "results/20260909T155053Z"
-)
+ORIGINAL_RUN = Path("results/20260910T174657Z")
+ABLATION_RUN = Path("results/20260910T175101Z")
 
 OUTPUT_DIR = Path(
     "results/forecast_analysis"

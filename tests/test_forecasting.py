@@ -4,6 +4,7 @@ import pandas as pd
 from experiments.forecasting.run_forecast_experiment import (
     FEATURE_COLUMNS,
     make_features,
+    recursive_rf_forecast,
 )
 
 
@@ -45,26 +46,18 @@ def test_next_timestamp_feature_alignment():
 
     assert next_features["timestamp"] == next_timestamp
 
-    # Calendar features must correspond to t+1.
     assert next_features["hour"] == next_timestamp.hour
     assert next_features["day_of_week"] == next_timestamp.dayofweek
 
-    # lag_1 for t+1 must be y(t).
     assert next_features["lag_1"] == history["request_count"].iloc[-1]
-
-    # lag_3 for t+1 must be y(t-2).
     assert next_features["lag_3"] == history["request_count"].iloc[-3]
-
-    # lag_6 for t+1 must be y(t-5).
     assert next_features["lag_6"] == history["request_count"].iloc[-6]
-
-    # lag_24 for t+1 must be y(t-23).
     assert next_features["lag_24"] == history["request_count"].iloc[-24]
 
-    # The placeholder must not contaminate the features.
     assert not next_features[FEATURE_COLUMNS].isna().any()
 
-def test_recursive_forecast_uses_next_timestamp_features(monkeypatch):
+
+def test_recursive_forecast_uses_next_timestamp_features():
     """Recursive forecasting must request features for t+1, not t."""
 
     history = pd.DataFrame(
@@ -86,10 +79,6 @@ def test_recursive_forecast_uses_next_timestamp_features(monkeypatch):
             captured["features"] = x.copy()
             return np.array([999.0])
 
-    from experiments.forecasting.run_forecast_experiment import (
-        recursive_rf_forecast,
-    )
-
     predictions = recursive_rf_forecast(
         DummyModel(),
         history,
@@ -105,10 +94,64 @@ def test_recursive_forecast_uses_next_timestamp_features(monkeypatch):
         + pd.Timedelta(hours=1)
     )
 
+    # These must correspond to t+1, not t.
     assert features["hour"] == next_timestamp.hour
     assert features["day_of_week"] == next_timestamp.dayofweek
 
+    # These must use only observations through t.
     assert features["lag_1"] == history["request_count"].iloc[-1]
     assert features["lag_3"] == history["request_count"].iloc[-3]
     assert features["lag_6"] == history["request_count"].iloc[-6]
     assert features["lag_24"] == history["request_count"].iloc[-24]
+
+
+def test_recursive_forecast_does_not_use_future_actuals():
+    """Actual observations after the forecast origin must not affect predictions."""
+
+    history = pd.DataFrame(
+        {
+            "timestamp": pd.date_range(
+                "2026-01-01 00:00:00",
+                periods=30,
+                freq="h",
+                tz="UTC",
+            ),
+            "request_count": np.arange(100, 130, dtype=float),
+        }
+    )
+
+    forecast_origin = 25
+
+    observed_history = history.iloc[:forecast_origin].copy()
+
+    future_actuals = history.copy()
+    future_actuals.loc[
+        forecast_origin:,
+        "request_count",
+    ] = 10000.0
+
+    future_modified_history = future_actuals.iloc[:forecast_origin].copy()
+
+    class DummyModel:
+        def predict(self, x):
+            return np.array(
+                [
+                    float(
+                        x["lag_1"].iloc[0]
+                    )
+                ]
+            )
+
+    predictions_original = recursive_rf_forecast(
+        DummyModel(),
+        observed_history,
+        horizon=5,
+    )
+
+    predictions_modified = recursive_rf_forecast(
+        DummyModel(),
+        future_modified_history,
+        horizon=5,
+    )
+
+    assert predictions_original == predictions_modified

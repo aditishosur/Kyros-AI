@@ -18,6 +18,10 @@ OUTPUT_DIR = Path(
     "results/forecast_analysis/figures"
 )
 
+ORIGINAL_RUN_DIR = Path(
+    "results/20260910T174657Z"
+)
+
 DPI = 300
 
 
@@ -48,6 +52,27 @@ def save_figure(
     plt.close(fig)
 
     print(f"Saved: {path}")
+
+
+def load_predictions() -> pd.DataFrame:
+    path = (
+        ORIGINAL_RUN_DIR
+        / "predictions.csv"
+    )
+
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Prediction artifact not found: {path}"
+        )
+
+    data = pd.read_csv(path)
+
+    data["timestamp"] = pd.to_datetime(
+        data["timestamp"],
+        utc=True,
+    )
+
+    return data
 
 
 # ============================================================
@@ -211,11 +236,138 @@ def figure_2_endpoint_horizon() -> None:
 
 # ============================================================
 # FIGURE 3
+# ACTUAL VS RF FORECAST
+# ============================================================
+
+
+def figure_3_actual_vs_forecast() -> None:
+
+    data = load_predictions()
+
+    data = data[
+        data["model"] == "RF"
+    ].copy()
+
+    # Use one representative endpoint and
+    # one-step-ahead forecasts for readability.
+    endpoint = "/payments"
+
+    subset = data[
+        (data["endpoint"] == endpoint)
+        & (data["horizon"] == 1)
+    ].copy()
+
+    subset = subset.sort_values(
+        "timestamp"
+    )
+
+    if subset.empty:
+        raise ValueError(
+            "No RF 1h predictions found "
+            f"for endpoint {endpoint}."
+        )
+
+    fig, ax = plt.subplots(
+        figsize=(11, 5.5)
+    )
+
+    ax.plot(
+        subset["timestamp"],
+        subset["actual"],
+        linewidth=2,
+        label="Actual",
+    )
+
+    ax.plot(
+        subset["timestamp"],
+        subset["prediction"],
+        linewidth=2,
+        label="RF Forecast",
+    )
+
+    ax.set_xlabel(
+        "Timestamp (UTC)"
+    )
+
+    ax.set_ylabel(
+        "Request Count"
+    )
+
+    ax.set_title(
+        "Actual vs RF Forecast: /payments (1h Horizon)"
+    )
+
+    ax.legend()
+
+    ax.grid(
+        axis="y",
+        alpha=0.25,
+    )
+
+    fig.autofmt_xdate()
+
+    save_figure(
+        fig,
+        "figure_3_actual_vs_rf_forecast.png",
+    )
+
+
+# ============================================================
+# FIGURE 4
+# FORECAST ERROR BY HORIZON
+# ============================================================
+
+
+def figure_4_horizon_error() -> None:
+
+    data = pd.read_csv(
+        ANALYSIS_DIR
+        / "rf_error_by_horizon.csv"
+    )
+
+    data = data.sort_values(
+        "horizon"
+    )
+
+    fig, ax = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    ax.bar(
+        data["horizon"].astype(str),
+        data["MAE"],
+    )
+
+    ax.set_xlabel(
+        "Forecast Horizon (hours)"
+    )
+
+    ax.set_ylabel(
+        "Mean Absolute Error (MAE)"
+    )
+
+    ax.set_title(
+        "RF Forecast Error by Horizon"
+    )
+
+    ax.grid(
+        axis="y",
+        alpha=0.25,
+    )
+
+    save_figure(
+        fig,
+        "figure_4_rf_horizon_error.png",
+    )
+
+
+# ============================================================
+# FIGURE 5
 # RF ERROR OVER TIME
 # ============================================================
 
 
-def figure_3_error_over_time() -> None:
+def figure_5_error_over_time() -> None:
 
     data = pd.read_csv(
         ANALYSIS_DIR
@@ -286,17 +438,17 @@ def figure_3_error_over_time() -> None:
 
     save_figure(
         fig,
-        "figure_3_rf_error_over_time.png",
+        "figure_5_rf_error_over_time.png",
     )
 
 
 # ============================================================
-# FIGURE 4
+# FIGURE 6
 # LAG-24 ABLATION
 # ============================================================
 
 
-def figure_4_lag24_ablation() -> None:
+def figure_6_lag24_ablation() -> None:
 
     data = pd.read_csv(
         ANALYSIS_DIR
@@ -352,7 +504,7 @@ def figure_4_lag24_ablation() -> None:
 
     save_figure(
         fig,
-        "figure_4_lag24_ablation.png",
+        "figure_6_lag24_ablation.png",
     )
 
 
@@ -374,6 +526,10 @@ def main() -> None:
     )
 
     print(
+        f"Original run: {ORIGINAL_RUN_DIR}"
+    )
+
+    print(
         f"Output directory: {OUTPUT_DIR}"
     )
 
@@ -381,9 +537,13 @@ def main() -> None:
 
     figure_2_endpoint_horizon()
 
-    figure_3_error_over_time()
+    figure_3_actual_vs_forecast()
 
-    figure_4_lag24_ablation()
+    figure_4_horizon_error()
+
+    figure_5_error_over_time()
+
+    figure_6_lag24_ablation()
 
     print()
     print("=" * 60)
