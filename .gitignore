@@ -16,6 +16,9 @@ __pycache__/
 # Database
 data/pulseops.db
 
+# Downloaded external research inputs; commands recreate them from the official source.
+data/external/
+
 # Build
 dist/
 build/

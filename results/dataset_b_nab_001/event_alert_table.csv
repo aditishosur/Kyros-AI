@@ -1,0 +1,3 @@
+event_id,first_time,last_time,detected
+nab_event_2,2014-03-18 17:06:00+00:00,2014-03-19 04:16:00+00:00,False
+nab_event_3,2014-03-20 21:26:00+00:00,2014-03-21 03:41:00+00:00,True

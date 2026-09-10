@@ -1,0 +1,15 @@
+{
+  "dataset": "Numenta Anomaly Benchmark",
+  "series_key": "realKnownCause/ec2_request_latency_system_failure.csv",
+  "source_path": "data\\external\\NAB\\data\\realKnownCause\\ec2_request_latency_system_failure.csv",
+  "windows_path": "data\\external\\NAB\\labels\\combined_windows.json",
+  "row_count": 4021,
+  "event_windows": 3,
+  "labelled_rows": 346,
+  "available_kyros_features": [
+    "timestamp",
+    "endpoint"
+  ],
+  "source_metric_column": "source_metric_value",
+  "limitation": "This is a labelled, univariate NAB result. It is not multivariate API telemetry validation and has no independent warning window for lead-time evaluation."
+}

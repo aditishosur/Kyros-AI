@@ -2,7 +2,7 @@ DAILY KYROS RESEARCH HANDOFF
 
 Owner: Aditi
 Date: 2026-09-09
-Git branch / commit: [run: git branch --show-current] / [run: git rev-parse --short HEAD]
+Git branch / commit: main / e8e82ad522a542de7731a71f8efbd8c20290e8b5
 
 What I completed:
 - Froze the controlled scenario taxonomy and cause labels.
@@ -20,7 +20,7 @@ python -m experiments.anomaly.run_experiment --config configs\anomaly_protocol.j
 
 Input dataset + hash/version:
 Controlled synthetic Dataset A, controlled_dataset_v1
-Telemetry SHA-256: [run: Get-FileHash .\data\processed\controlled_anomaly\telemetry.csv -Algorithm SHA256]
+Telemetry SHA-256: FD7FC291BC9640F2B2475274688CBDD5CBE888C5716265D58874FF492DF73A7A
 
 Run ID(s):
 anomaly_final_001
@@ -36,9 +36,9 @@ Result files:
 - results/anomaly_final_001/run_metadata.json
 
 Key metric(s):
-Robust baseline: event recall [value], early-warning recall [value], PR-AUC [value], false-alert rate [value], median lead time [value].
-Isolation Forest: event recall [value], early-warning recall [value], PR-AUC [value], false-alert rate [value], median lead time [value].
-Reactive threshold: event recall [value], early-warning recall [value], false-alert rate [value].
+Robust baseline: event recall 0.800, early-warning recall 0.200, PR-AUC 0.604, false-alert rate 0.915 per 100 normal hours, median lead time 9.5 hours.
+Isolation Forest: event recall 1.000, early-warning recall 0.125, PR-AUC 0.680, false-alert rate 1.144 per 100 normal hours, median lead time 11.0 hours.
+Reactive threshold: event recall 0.725, early-warning recall 0.000, false-alert rate 0.000 per 100 normal hours.
 
 What failed / limitation:
 Dataset B is NAB, used only as limited external labelled anomaly validation. It cannot validate multivariate API anomaly detection, API latency/error thresholds, RCA, or the warning lead-time metric.

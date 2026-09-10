@@ -18,6 +18,60 @@ REQUIRED_COLUMNS = {
 }
 
 
+def load_nab_windows(windows_path: Path, series_key: str) -> list[tuple[pd.Timestamp, pd.Timestamp]]:
+    """Load one NAB series' official labelled anomaly windows."""
+    windows = json.loads(windows_path.read_text(encoding="utf-8"))
+    if series_key not in windows:
+        raise ValueError(f"NAB series key not found in labels: {series_key}")
+    return [
+        (pd.Timestamp(start, tz="UTC"), pd.Timestamp(end, tz="UTC"))
+        for start, end in windows[series_key]
+    ]
+
+
+def adapt_nab_series(
+    source_path: Path,
+    windows_path: Path,
+    series_key: str,
+    output_path: Path,
+) -> tuple[pd.DataFrame, dict]:
+    """Preserve a NAB signal and materialize its official anomaly windows as labels.
+
+    The NAB value remains a generic source metric. It is deliberately not mapped
+    to latency, request count, CPU, database latency, or error rate.
+    """
+    source = pd.read_csv(source_path)
+    if not {"timestamp", "value"}.issubset(source.columns):
+        raise ValueError("NAB source must contain timestamp and value columns")
+    adapted = source.loc[:, ["timestamp", "value"]].copy()
+    adapted["timestamp"] = pd.to_datetime(adapted["timestamp"], utc=True, errors="raise")
+    adapted = adapted.sort_values("timestamp").drop_duplicates("timestamp").reset_index(drop=True)
+    adapted = adapted.rename(columns={"value": "source_metric_value"})
+    adapted["endpoint"] = series_key
+    windows = load_nab_windows(windows_path, series_key)
+    adapted["event_label"] = False
+    adapted["event_id"] = pd.NA
+    for event_index, (start, end) in enumerate(windows, start=1):
+        inside = adapted["timestamp"].between(start, end, inclusive="both")
+        adapted.loc[inside, "event_label"] = True
+        adapted.loc[inside, "event_id"] = f"nab_event_{event_index}"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    adapted.to_csv(output_path, index=False)
+    report = {
+        "dataset": "Numenta Anomaly Benchmark",
+        "series_key": series_key,
+        "source_path": str(source_path),
+        "windows_path": str(windows_path),
+        "row_count": int(len(adapted)),
+        "event_windows": len(windows),
+        "labelled_rows": int(adapted["event_label"].sum()),
+        "available_kyros_features": ["timestamp", "endpoint"],
+        "source_metric_column": "source_metric_value",
+        "limitation": "This is a labelled, univariate NAB result. It is not multivariate API telemetry validation and has no independent warning window for lead-time evaluation.",
+    }
+    return adapted, report
+
+
 def load_mapping(mapping_path: Path) -> dict:
     """Read a deliberately explicit source-column to Kyros-column mapping."""
     mapping = json.loads(mapping_path.read_text(encoding="utf-8"))

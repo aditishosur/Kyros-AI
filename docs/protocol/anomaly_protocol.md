@@ -32,7 +32,7 @@ Reactive monitoring alerts when latency is at least 500 ms or error rate is at l
 
 ## Dataset B boundary
 
-The selected limited Dataset B is the Numenta Anomaly Benchmark. It can support an external labelled anomaly sensitivity result, but does not supply the full API telemetry feature set or an independently labelled pre-onset warning period. It must not be used to claim multivariate API validation or Dataset B warning lead time. See `docs/data_dictionary/dataset_b_decision.md`.
+The selected limited Dataset B is the Numenta Anomaly Benchmark. `dataset_b_nab_001` evaluates one official NAB series with official labelled anomaly windows using a univariate Isolation Forest fitted only on normal chronological training observations. It does not supply the full API telemetry feature set or an independently labelled pre-onset warning period. It must not be used to claim multivariate API validation or Dataset B warning lead time. See `docs/data_dictionary/dataset_b_decision.md`.
 
 ## Reproducibility
 
@@ -40,4 +40,5 @@ The selected limited Dataset B is the Numenta Anomaly Benchmark. It can support 
 python -m pytest tests/test_scenarios.py tests/test_splits.py tests/test_anomaly_evaluation.py
 python -m experiments.scenarios.generator --config configs/anomaly_protocol.json
 python -m experiments.anomaly.run_experiment --config configs/anomaly_protocol.json --run-id anomaly_final_001
+python -m experiments.anomaly.run_dataset_b_evaluation --source data/external/NAB/data/realKnownCause/ec2_request_latency_system_failure.csv --windows data/external/NAB/labels/combined_windows.json --series-key realKnownCause/ec2_request_latency_system_failure.csv --run-id dataset_b_nab_001
 ```

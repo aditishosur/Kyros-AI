@@ -1,0 +1,13 @@
+{
+  "dataset": "NAB",
+  "evaluation_type": "univariate labelled anomaly-window validation",
+  "event_recall": 0.5,
+  "event_precision": 1.0,
+  "event_f1": 0.6666666666666666,
+  "pr_auc": 0.3232495914958395,
+  "roc_auc": 0.4934614709496226,
+  "false_alerts": 0,
+  "false_alert_rate_per_100_normal_rows": 0.0,
+  "warning_lead_time": "not valid for NAB",
+  "test_events_eligible": 2
+}

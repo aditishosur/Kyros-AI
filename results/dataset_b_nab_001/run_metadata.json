@@ -1,0 +1,8 @@
+{
+  "run_id": "dataset_b_nab_001",
+  "source_sha256": "1a0112add1e69052d2b2075624fc8c3ec436a9fc94ae6be31347db0aac8f9dd7",
+  "windows_sha256": "164294d56679e33a9323f6b3824754183dbf661e31848f328bfc57019df804c4",
+  "threshold_selected_on_validation_only": 0.7760141294667773,
+  "split": "chronological 60/20/20; split-straddling events excluded",
+  "limitation": "This is a labelled, univariate NAB result. It is not multivariate API telemetry validation and has no independent warning window for lead-time evaluation."
+}
