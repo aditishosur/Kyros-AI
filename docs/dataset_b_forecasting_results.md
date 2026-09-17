@@ -127,7 +127,7 @@ Each model-horizon combination contains 99 test predictions.
 
 ## 6. Comparison with Temporal Baselines
 
-The Random Forest produced lower overall MAE and RMSE than both baselines across all three evaluated horizons in the primary test evaluation.
+The Random Forest produced lower aggregate MAE than persistence at all three evaluated horizons. Compared with seasonal naive, Random Forest achieved lower MAE at 1 hour and 6 hours, while seasonal naive achieved lower MAE at 12 hours. Random Forest achieved lower RMSE than both baselines at all three evaluated horizons.
 
 ### 6.1 Comparison with Persistence
 
@@ -186,9 +186,12 @@ The timestamps are anonymized or shifted, so the observed hour labels should not
 
 The mean predictions across the test evaluation were:
 
+| Persistence | 1h | 58.02 | 58.02 | 58.02 |
+| Persistence | 6h | 58.02 | 58.02 | 58.02 |
+| Persistence | 12h | 58.02 | 58.02 | 58.02 |
+
 | Model | 1h | 6h | 12h |
 |---|---:|---:|---:|
-| Persistence | 58.02 | — | — |
 | Random Forest | 59.95 | 79.68 | 91.19 |
 | Seasonal Naive | 77.81 | 76.98 | 77.05 |
 
@@ -306,7 +309,7 @@ These figures support comparison of model errors across horizons, time-of-day ca
 
 The Dataset B experiment produced the following findings:
 
-1. The Random Forest achieved lower aggregate MAE and RMSE than persistence and seasonal naive at all three evaluated horizons in the primary test evaluation.
+1. The Random Forest achieved lower aggregate MAE than persistence at all three evaluated horizons. It achieved lower MAE than seasonal naive at 1 hour and 6 hours, while seasonal naive achieved lower MAE at 12 hours. Random Forest achieved lower RMSE than both baselines at all three evaluated horizons.
 
 2. Relative to persistence, the Random Forest reduced MAE by 31.81% at 1 hour, 46.12% at 6 hours, and 51.71% at 12 hours.
 
