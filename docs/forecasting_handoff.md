@@ -608,7 +608,7 @@ The selected configuration was chosen using validation data only.
 | ------- | --- | ---- | ----- |
 | 1 hour | 41.202020 | 79.538632 | 91.677268 |
 | 6 hours | 40.383838 | 79.347338 | 93.096453 |
-| 12 hours | 41.383838 | 79.710524 | Not confirmed |
+| 12 hours | 41.383838 | 79.710524 | 94.940520 |
 
 The exact seasonal-naive metric values should be taken from the committed Dataset B metrics artifact when preparing final paper tables.
 
