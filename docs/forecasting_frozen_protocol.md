@@ -1,4 +1,4 @@
-# Forecasting Frozen Protocol
+﻿# Forecasting Frozen Protocol
 
 ## 1. Research Question
 
@@ -55,7 +55,7 @@ The forecasting target is hourly `request_count`.
 
 ## 3. Temporal Resolution and Ordering
 
-All forecasting experiments operate at hourly temporal resolution.
+All Dataset A forecasting experiments operate at hourly temporal resolution.
 
 Observations are ordered chronologically by timestamp.
 
@@ -71,25 +71,25 @@ Dataset A contains 336 unique hourly timestamps.
 
 The frozen split is:
 
-| Split | Timestamps | Rows |
-|---|---:|---:|
-| Train | 202 | 1,010 |
-| Validation | 67 | 335 |
-| Test | 67 | 335 |
+| Split      | Timestamps | Rows |
+| ---------- | ---------: | ---: |
+| Train      |        202 | 1,010 |
+| Validation |         67 |   335 |
+| Test       |         67 |   335 |
 
 The temporal ranges are:
 
 ### Train
 
-`2026-07-21 06:00:00 UTC` → `2026-07-29 15:00:00 UTC`
+`2026-07-21 06:00:00 UTC` â†’ `2026-07-29 15:00:00 UTC`
 
 ### Validation
 
-`2026-07-29 16:00:00 UTC` → `2026-08-01 10:00:00 UTC`
+`2026-07-29 16:00:00 UTC` â†’ `2026-08-01 10:00:00 UTC`
 
 ### Test
 
-`2026-08-01 11:00:00 UTC` → `2026-08-04 05:00:00 UTC`
+`2026-08-01 11:00:00 UTC` â†’ `2026-08-04 05:00:00 UTC`
 
 The split is chronological and non-overlapping.
 
@@ -136,11 +136,11 @@ Future observed values are never used to construct features for an earlier forec
 
 For example, when forecasting `t+1`:
 
-- the feature-row timestamp is `t+1`
-- calendar features correspond to `t+1`
-- `lag_1` corresponds to `y(t)`
-- `lag_3` corresponds to `y(t-2)`
-- and so on.
+- The feature-row timestamp is `t+1`.
+- Calendar features correspond to `t+1`.
+- `lag_1` corresponds to `y(t)`.
+- `lag_3` corresponds to `y(t-2)`.
+- Other lag and rolling features use only the appropriate historical observations available before `t+1`.
 
 This recursive implementation is covered by targeted regression tests in:
 
@@ -191,12 +191,12 @@ A small validation-only hyperparameter grid is used.
 Candidate configurations:
 
 | `n_estimators` | `min_samples_leaf` | `max_depth` |
-|---:|---:|---|
-| 100 | 1 | None |
-| 140 | 2 | None |
-| 200 | 2 | None |
-| 140 | 4 | None |
-| 140 | 2 | 10 |
+| -------------: | -----------------: | ----------: |
+|            100 |                  1 |        None |
+|            140 |                  2 |        None |
+|            200 |                  2 |        None |
+|            140 |                  4 |        None |
+|            140 |                  2 |          10 |
 
 The configuration is selected using validation performance only.
 
@@ -251,7 +251,7 @@ Secondary metrics include:
 
 - Root Mean Squared Error (RMSE)
 - sMAPE, where applicable
-- R², where applicable
+- RÂ², where applicable
 
 MAE is the primary metric used for model comparison because it provides an interpretable measure of average absolute workload prediction error.
 
@@ -268,7 +268,7 @@ For each origin:
 3. Forecasts are compared with the corresponding future observations.
 4. Absolute errors are recorded.
 
-The final test evaluation contains:
+The final Dataset A test evaluation contains:
 
 - 55 valid forecast origins
 - 5 endpoints
@@ -277,10 +277,10 @@ The final test evaluation contains:
 for a total of:
 
 ```text
-55 × 5 × 3 = 825
+55 Ã— 5 Ã— 3 = 825
 ```
 
-RF test prediction records.
+Random Forest test prediction records.
 
 ---
 
@@ -301,23 +301,25 @@ Both conditions are evaluated on the same held-out test period using the same ho
 
 The purpose of the ablation is to assess the contribution of the 24-hour lag feature within this experimental setup.
 
+The ablation findings are specific to Dataset A, the evaluated feature set, the frozen Random Forest configuration, and the experimental procedure. They do not establish that 24-hour lag features are generally unnecessary for workload forecasting.
+
 ---
 
 ## 15. Reproducibility
 
-Each experiment records reproducibility metadata including:
+Each Dataset A experiment records reproducibility metadata including:
 
-- run ID
+- Run ID
 - Git commit
-- configuration
-- random seed
-- input data hash
+- Configuration
+- Random seed
+- Input data hash
 - UTC execution timestamp
-- environment/package information
+- Environment/package information
 
 Forecast predictions and evaluation metrics are saved as machine-readable CSV files.
 
-The forecasting implementation and tests are maintained under:
+The Dataset A forecasting implementation and tests are maintained under:
 
 `experiments/forecasting/`
 
@@ -325,41 +327,78 @@ and
 
 `tests/test_forecasting.py`
 
+Additional external-validation forecasting code and tests are maintained separately and must not be interpreted as modifications to the frozen Dataset A protocol.
+
 ---
 
 ## 16. Frozen Experimental Boundaries
 
-The following are explicitly outside the frozen forecasting experiment:
+The following are explicitly outside the frozen Dataset A forecasting experiment:
 
-- deep learning forecasting models
+- Deep learning forecasting models
 - LLM-based forecasting
 - RAG-based forecasting
 - UI-based evaluation
-- tuning on the held-out test set
-- random temporal splits
-- future-data leakage
-- undocumented changes to the evaluation procedure
+- Tuning on the held-out test set
+- Random temporal splits
+- Future-data leakage
+- Undocumented changes to the evaluation procedure
 
 Any future forecasting model or feature experiment must be treated as a separate experiment rather than silently modifying the frozen protocol.
 
 ---
 
-## 17. Authoritative Experiment Runs
+## 17. Authoritative Dataset A Experiment Runs
 
 Corrected Dataset A Random Forest experiment:
 
+```text
 results/20260910T174657Z/
+```
 
-Corrected lag-24 ablation:
+Corrected Dataset A lag-24 ablation:
 
+```text
 results/20260910T175101Z/
+```
 
-Forecast error analysis:
+Dataset A forecast error analysis:
 
-`results/forecast_analysis/`
+```text
+results/forecast_analysis/
+```
 
-Publication figures:
+Dataset A publication figures:
 
-`results/forecast_analysis/figures/`
+```text
+results/forecast_analysis/figures/
+```
 
 These corrected runs supersede earlier runs produced before the recursive forecasting alignment correction.
+
+---
+
+## 18. Dataset B External Validation Clarification
+
+Dataset B is evaluated as a separate external-validation experiment and does not modify the frozen Dataset A protocol.
+
+Dataset B uses the GenTD26 real-world GenAI serving trace and has its own:
+
+- Data preprocessing procedure
+- Temporal aggregation and target mapping
+- Train/validation/test split
+- Validation-only model selection
+- Forecasting configuration
+- Evaluation artifacts
+- Error analysis
+- Feature ablation procedure
+
+Unlike the Dataset A ablation, Dataset B's ablation uses independently selected hyperparameters for each feature condition. Therefore, Dataset B ablation results must not be interpreted as a fixed-hyperparameter feature ablation.
+
+Dataset B methodology and results are documented separately in:
+
+```text
+docs/dataset_b_forecasting_results.md
+```
+
+Dataset A and Dataset B results must be reported separately because they use different datasets, data characteristics, and experimental configurations.

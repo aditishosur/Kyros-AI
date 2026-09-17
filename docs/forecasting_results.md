@@ -1,3 +1,4 @@
+
 # Forecasting Results
 
 ## 1. Overview
@@ -67,7 +68,7 @@ The seasonal-naive baseline results were:
 
 ## 4. Comparison with Temporal Baselines
 
-The Random Forest outperformed both temporal baselines at all three evaluated forecast horizons.
+The Random Forest outperformed both temporal baselines at all three evaluated forecast horizons in aggregate.
 
 Compared with persistence, the Random Forest reduced mean MAE by:
 
@@ -98,13 +99,13 @@ Thus, although the Random Forest performed better in aggregate, persistence rema
 
 The final Random Forest MAE values were:
 
-| Endpoint     |     1h |     6h |     12h |
-| ------------ | -----: | -----: | ------: |
-| `/identity`  | 27.263 | 27.703 |  25.246 |
-| `/inventory` | 37.070 | 44.787 |  40.717 |
-| `/orders`    | 51.602 | 71.350 |  74.601 |
-| `/payments`  | 71.416 | 97.572 | 122.199 |
-| `/search`    | 66.683 | 88.830 |  85.881 |
+| Endpoint      |     1h |     6h |    12h |
+| ------------- | -----: | -----: | ------: |
+| `/identity`   | 27.263 | 27.703 |  25.246 |
+| `/inventory`  | 37.070 | 44.787 |  40.717 |
+| `/orders`     | 51.602 | 71.350 |  74.601 |
+| `/payments`   | 71.416 | 97.572 | 122.199 |
+| `/search`     | 66.683 | 88.830 |  85.881 |
 
 `/identity` had the lowest forecasting error across the evaluated endpoints.
 
@@ -128,13 +129,13 @@ Across these predictions, the overall MAE was:
 
 Endpoint-level error statistics were:
 
-| Endpoint     |    MAE |    RMSE | Mean Error |
-| ------------ | -----: | ------: | ---------: |
-| `/payments`  | 97.062 | 132.076 |    +51.282 |
-| `/search`    | 80.465 | 106.142 |    +12.973 |
-| `/orders`    | 65.851 |  85.433 |     +8.975 |
-| `/inventory` | 40.858 |  53.505 |     -7.139 |
-| `/identity`  | 26.737 |  33.855 |     +1.535 |
+| Endpoint      |    MAE |    RMSE | Mean Error |
+| ------------- | -----: | -------: | ---------: |
+| `/payments`   | 97.062 | 132.076 |    +51.282 |
+| `/search`     | 80.465 | 106.142 |    +12.973 |
+| `/orders`     | 65.851 |  85.433 |     +8.975 |
+| `/inventory`  | 40.858 |  53.505 |     -7.139 |
+| `/identity`   | 26.737 |  33.855 |     +1.535 |
 
 Mean error is defined as:
 
@@ -153,7 +154,7 @@ The `/payments` endpoint showed the strongest systematic underprediction.
 Aggregate Random Forest error by horizon was:
 
 | Horizon  |    MAE |   RMSE | Mean Error |
-| -------- | -----: | -----: | ---------: |
+| -------- | -----: | ------: | ---------: |
 | 1 hour   | 50.807 | 74.649 |     +3.507 |
 | 6 hours  | 66.048 | 93.101 |    +12.856 |
 | 12 hours | 69.729 | 98.846 |    +24.213 |
@@ -273,7 +274,13 @@ Dataset A is a controlled synthetic workload dataset. Its temporal patterns and 
 
 The endpoint-level differences and large errors during workload changes also show that strong aggregate performance does not imply uniformly accurate forecasts for every endpoint or operating condition.
 
-For these reasons, an independent real-world Dataset B is required before making broader claims about forecasting performance.
+Independent real-world Dataset B validation has been completed separately using the GenTD26 production GenAI serving trace. Its methodology, results, error analysis, and ablation are documented in:
+
+```text
+docs/dataset_b_forecasting_results.md
+```
+
+Dataset B results should be interpreted as a separate external validation experiment and should not be combined with Dataset A metrics.
 
 ---
 
@@ -322,12 +329,14 @@ results/forecast_analysis/figures/
 
 Contains:
 
+```text
 figure_1_mae_by_horizon.png
 figure_2_rf_mae_endpoint_horizon.png
 figure_3_actual_vs_rf_forecast.png
 figure_4_rf_horizon_error.png
 figure_5_rf_error_over_time.png
 figure_6_lag24_ablation.png
+```
 
 ### Implementation
 
@@ -337,13 +346,19 @@ Forecasting experiment code:
 experiments/forecasting/
 ```
 
-Forecasting regression tests:
+Dataset A forecasting regression tests:
 
 ```text
 tests/test_forecasting.py
 ```
 
-The targeted forecasting tests pass:
+Additional external forecasting regression tests are located in:
+
+```text
+tests/test_external_forecasting.py
+```
+
+The targeted external forecasting tests pass:
 
 ```text
 3 passed
@@ -352,8 +367,10 @@ The targeted forecasting tests pass:
 The full repository test suite passes:
 
 ```text
-7 passed
+10 passed, 4 warnings
 ```
+
+The tests provide regression coverage for selected forecasting behavior, including past-only prediction behavior and rejection of unknown models. They do not prove that every possible leakage pathway is impossible.
 
 ---
 
@@ -367,6 +384,14 @@ Earlier forecasting runs produced before the recursive feature/timestamp alignme
 
 ### Dataset B
 
-**Real-data validation: PENDING**
+**Real-data validation: COMPLETE**
 
-Dataset B has not yet been incorporated into these results. Its selection and evaluation will be documented separately after the dataset has been confirmed and its schema, temporal resolution, target mapping, and licensing have been validated.
+Dataset B external validation was conducted using the GenTD26 real-world GenAI serving trace.
+
+The Dataset B methodology, preprocessing, temporal evaluation protocol, baseline comparisons, Random Forest results, error analysis, ablation, figures, limitations, and reproducibility artifacts are documented separately in:
+
+```text
+docs/dataset_b_forecasting_results.md
+```
+
+Dataset A and Dataset B results should be reported separately because they use different datasets, data characteristics, and experimental configurations.
