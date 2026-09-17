@@ -1,4 +1,3 @@
-
 # Forecasting Results
 
 ## 1. Overview
@@ -106,6 +105,13 @@ The final Random Forest MAE values were:
 | `/orders`     | 51.602 | 71.350 |  74.601 |
 | `/payments`   | 71.416 | 97.572 | 122.199 |
 | `/search`     | 66.683 | 88.830 |  85.881 |
+| Endpoint     |     1h |     6h |     12h |
+| ------------ | -----: | -----: | ------: |
+| `/identity`  | 27.263 | 27.703 |  25.246 |
+| `/inventory` | 37.070 | 44.787 |  40.717 |
+| `/orders`    | 51.602 | 71.350 |  74.601 |
+| `/payments`  | 71.416 | 97.572 | 122.199 |
+| `/search`    | 66.683 | 88.830 |  85.881 |
 
 `/identity` had the lowest forecasting error across the evaluated endpoints.
 
@@ -154,7 +160,7 @@ The `/payments` endpoint showed the strongest systematic underprediction.
 Aggregate Random Forest error by horizon was:
 
 | Horizon  |    MAE |   RMSE | Mean Error |
-| -------- | -----: | ------: | ---------: |
+| -------- | -----: | -----: | ---------: |
 | 1 hour   | 50.807 | 74.649 |     +3.507 |
 | 6 hours  | 66.048 | 93.101 |    +12.856 |
 | 12 hours | 69.729 | 98.846 |    +24.213 |
@@ -329,7 +335,6 @@ results/forecast_analysis/figures/
 
 Contains:
 
-```text
 figure_1_mae_by_horizon.png
 figure_2_rf_mae_endpoint_horizon.png
 figure_3_actual_vs_rf_forecast.png

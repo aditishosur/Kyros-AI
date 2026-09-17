@@ -1,0 +1,139 @@
+{
+  "info": {
+    "_postman_id": "kyros-api-analytics-demo",
+    "name": "Kyros API Analytics Platform",
+    "description": "API collection demonstrating Kyros REST API testing using Postman.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "api_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "API Registry",
+      "item": [
+        {
+          "name": "Get APIs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/apis",
+              "host": ["{{base_url}}"],
+              "path": ["apis"]
+            }
+          }
+        },
+        {
+          "name": "Get API by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/apis/{{api_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["apis", "{{api_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Analytics Overview",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/analytics/overview",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "overview"]
+            }
+          }
+        },
+        {
+          "name": "API Analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/analytics/apis/{{api_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "apis", "{{api_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Risk Analysis",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/analytics/apis/{{api_id}}/risk",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "apis", "{{api_id}}", "risk"]
+            }
+          }
+        },
+        {
+          "name": "Root Cause Analysis",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/analytics/apis/{{api_id}}/root-cause",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "apis", "{{api_id}}", "root-cause"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ML Forecasting",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/predictions/{{api_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["predictions", "{{api_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Simulation",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"api_id\": 1,\n  \"traffic_multiplier\": 1.5\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/simulation/run",
+          "host": ["{{base_url}}"],
+          "path": ["simulation", "run"]
+        }
+      }
+    }
+  ]
+}

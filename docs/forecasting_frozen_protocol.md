@@ -1,4 +1,4 @@
-﻿# Forecasting Frozen Protocol
+﻿﻿# Forecasting Frozen Protocol
 
 ## 1. Research Question
 
@@ -251,7 +251,7 @@ Secondary metrics include:
 
 - Root Mean Squared Error (RMSE)
 - sMAPE, where applicable
-- RÂ², where applicable
+- R², where applicable
 
 MAE is the primary metric used for model comparison because it provides an interpretable measure of average absolute workload prediction error.
 

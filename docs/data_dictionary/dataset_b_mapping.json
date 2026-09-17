@@ -1,0 +1,27 @@
+{
+  "dataset_name": "Numenta Anomaly Benchmark",
+  "official_source_url": "https://github.com/numenta/NAB",
+  "license_url": "https://github.com/numenta/NAB/blob/master/LICENSE.txt",
+  "default_endpoint": "nab_series",
+  "label_column": "event_label",
+  "columns": {
+    "timestamp": "timestamp",
+    "value": "source_metric_value"
+  },
+  "kyros_field_availability": {
+    "timestamp": "timestamp",
+    "endpoint": "not available; use the documented default endpoint only for series identity",
+    "request_count": "not available",
+    "response_time_ms": "not available",
+    "error_rate": "not available",
+    "cpu_usage": "not available",
+    "db_latency_ms": "not available",
+    "event_label": "provided separately by NAB anomaly-window labels"
+  },
+  "limitations": [
+    "The source metric value is not renamed as API latency, request count, error rate, CPU, or DB latency.",
+    "NAB supports limited labelled anomaly evaluation only.",
+    "NAB cannot validate the full multivariate Isolation Forest feature set.",
+    "NAB cannot support the frozen early-warning lead-time convention without a separately labelled warning window."
+  ]
+}
