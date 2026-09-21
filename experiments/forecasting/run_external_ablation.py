@@ -169,7 +169,7 @@ def run_variant(
             },
             "protocol_notes": [
                 "GenTD26 timestamps are used for ordering.",
-                "The series is already hourly and is not resampled.",
+                "The raw request-arrival timestamps were aggregated into hourly request counts by flooring `gmt_create` to the hour. Missing hours within the observed range were represented as zero requests.",
                 "RF is selected using validation only.",
                 "Test observations are not used for model fitting.",
                 "Test observations are used as rolling history.",

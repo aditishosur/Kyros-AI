@@ -4,7 +4,11 @@ import pytest
 
 from experiments.forecasting.run_external_forecast import (
     SERIES_NAME,
+    chronological_split_external,
     evaluate_external_model,
+    verify_external_split,
+    RF_GRID,
+    fit_rf
 )
 
 
@@ -113,3 +117,70 @@ def test_external_evaluation_rejects_unknown_model():
             horizons=[1],
             run_id="test",
         )
+
+def test_external_chronological_split_is_ordered_and_non_overlapping():
+    data = make_test_series(100)
+
+    train, validation, test = chronological_split_external(data)
+
+    verify_external_split(train, validation, test)
+
+    assert train["timestamp"].max() < validation["timestamp"].min()
+    assert validation["timestamp"].max() < test["timestamp"].min()
+
+    assert set(train["timestamp"]).isdisjoint(
+        validation["timestamp"]
+    )
+    assert set(validation["timestamp"]).isdisjoint(
+        test["timestamp"]
+    )
+    assert set(train["timestamp"]).isdisjoint(
+        test["timestamp"]
+    )
+
+def test_external_rf_predictions_do_not_use_future_actuals():
+    original_data = make_test_series(100)
+    altered_data = original_data.copy()
+
+    origin = original_data.loc[60, "timestamp"]
+
+    future_mask = altered_data["timestamp"] > origin
+
+    altered_data.loc[
+        future_mask,
+        "request_count",
+    ] += 10000
+
+    history = original_data[
+        original_data["timestamp"] <= origin
+    ][
+        ["timestamp", "request_count"]
+    ].copy()
+
+    model = fit_rf(
+        history,
+        RF_GRID[0],
+    )
+
+    original_predictions = evaluate_external_model(
+        model_name="RF",
+        model=model,
+        full_data=original_data,
+        origins=[origin],
+        horizons=[1, 6, 12],
+        run_id="original",
+    )
+
+    altered_predictions = evaluate_external_model(
+        model_name="RF",
+        model=model,
+        full_data=altered_data,
+        origins=[origin],
+        horizons=[1, 6, 12],
+        run_id="altered",
+    )
+
+    assert (
+        original_predictions["prediction"].tolist()
+        == altered_predictions["prediction"].tolist()
+    )

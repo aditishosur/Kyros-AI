@@ -15,8 +15,6 @@ def main() -> None:
 
     required_columns = {
         "gmt_create",
-        "predict_type",
-        "predict_status",
     }
 
     missing = required_columns - set(df.columns)
@@ -36,8 +34,9 @@ def main() -> None:
             "Found invalid or missing gmt_create timestamps."
         )
 
-    # Use the published timestamp's calendar hour as-is.
-    # Do not infer or apply a timezone conversion here.
+    # Aggregate every raw request-arrival record into hourly counts.
+    # All request types and predict_status values are intentionally included.
+    # No filtering is applied.
     hourly = (
         timestamps
         .dt.floor("h")

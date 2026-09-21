@@ -559,13 +559,13 @@ The Dataset B Random Forest configuration was selected independently of Dataset 
 Primary Dataset B run:
 
 ```
-results/20260917T145858Z/
+results/20260921T155024Z/
 ```
 
 Dataset B run identifier:
 
 ```
-20260917T145858Z
+20260921T155024Z
 ```
 
 Selected Random Forest configuration:
@@ -675,13 +675,13 @@ Therefore, the Dataset B comparison is a comparison of independently tuned varia
 ### 9.2 Authoritative Dataset B Ablation Run
 
 ```
-results/20260917T152404Z/
+results/20260921T155137Z/
 ```
 
 Comparison file:
 
 ```
-results/20260917T152404Z/dataset_b_gentd26_ablation/comparison_metrics.csv
+results/20260921T155137Z/dataset_b_gentd26_ablation/comparison_metrics.csv
 ```
 
 **Full Feature Configuration**
@@ -774,7 +774,7 @@ These figures cover:
 Dataset B figures are stored under:
 
 ```
-results/20260917T145858Z/dataset_b_gentd26/figures/
+results/20260921T155024Z/dataset_b_gentd26/figures/
 ```
 
 The plotting script is:
@@ -786,7 +786,7 @@ experiments/forecasting/plot_external_diagnostics.py
 The script uses the authoritative primary Dataset B run:
 
 ```
-20260917T145858Z
+20260921T155024Z
 ```
 
 Available figures:
@@ -863,7 +863,7 @@ This directory contains aggregate metrics, endpoint-level analysis, horizon anal
 ### 11.4 Dataset B Primary Run
 
 ```
-results/20260917T145858Z/
+results/20260921T155024Z/
 ```
 
 This run contains Dataset B metadata, validation selection, predictions, metrics, and related artifacts.
@@ -871,13 +871,13 @@ This run contains Dataset B metadata, validation selection, predictions, metrics
 ### 11.5 Dataset B Ablation
 
 ```
-results/20260917T152404Z/
+results/20260921T155137Z/
 ```
 
 Comparison file:
 
 ```
-results/20260917T152404Z/dataset_b_gentd26_ablation/comparison_metrics.csv
+results/20260921T155137Z/dataset_b_gentd26_ablation/comparison_metrics.csv
 ```
 
 ### 11.6 Forecasting Implementation
@@ -957,7 +957,7 @@ python -m experiments.forecasting.plot_external_diagnostics
 The plotting script must reference the authoritative run:
 
 ```
-20260917T145858Z
+20260921T155024Z
 ```
 
 The Dataset B ablation runner is:
@@ -1217,13 +1217,13 @@ docs/forecasting_results.md
 Primary run:
 
 ```
-results/20260917T145858Z/
+results/20260921T155024Z/
 ```
 
 Ablation:
 
 ```
-results/20260917T152404Z/
+results/20260921T155137Z/
 ```
 
 Results documentation:
@@ -1235,7 +1235,7 @@ docs/dataset_b_forecasting_results.md
 Figures:
 
 ```
-results/20260917T145858Z/dataset_b_gentd26/figures/
+results/20260921T155024Z/dataset_b_gentd26/figures/
 ```
 
 External forecasting runner:
