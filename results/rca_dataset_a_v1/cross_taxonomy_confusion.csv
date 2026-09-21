@@ -1,0 +1,6 @@
+true_label,APPLICATION_ERROR,DB_LATENCY,ELEVATED_RISK
+none,0,0,20
+traffic_surge,0,0,20
+service_delay,0,0,20
+database_slowdown,0,18,2
+application_error_burst,20,0,0

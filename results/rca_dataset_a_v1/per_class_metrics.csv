@@ -1,0 +1,6 @@
+true_label,episodes,correct,recall
+none,20,0,0.0
+traffic_surge,20,0,0.0
+service_delay,20,0,0.0
+database_slowdown,20,18,0.9
+application_error_burst,20,20,1.0
