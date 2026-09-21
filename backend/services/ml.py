@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from backend import models
 from backend.services.analytics import logs_frame, recent_metrics
-from backend.services.risk import calculate_risk+
+from backend.services.risk import calculate_risk
 
 
 def _hourly(df: pd.DataFrame) -> pd.DataFrame:
@@ -33,8 +33,8 @@ def _features(hourly: pd.DataFrame) -> pd.DataFrame:
     data["day_of_week"] = data["timestamp"].dt.dayofweek
     for lag in [1, 3, 6, 24]:
         data[f"lag_{lag}"] = data["request_count"].shift(lag)
-    data["rolling_mean_6"] = data["request_count"].rolling(6).mean()
-    data["rolling_mean_24"] = data["request_count"].rolling(24).mean()
+    data["rolling_mean_6"] = data["request_count"].shift(1).rolling(6).mean()
+    data["rolling_mean_24"] = data["request_count"].shift(1).rolling(24).mean()
     feature_cols = ["hour", "day_of_week", "lag_1", "lag_3", "lag_6", "lag_24", "rolling_mean_6", "rolling_mean_24"]
     return data.dropna(subset=feature_cols).reset_index(drop=True)
 

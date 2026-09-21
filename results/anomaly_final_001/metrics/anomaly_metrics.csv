@@ -1,0 +1,4 @@
+detector,event_recall,early_warning_recall,event_precision,event_f1,pr_auc,roc_auc,false_alerts,false_alert_rate_per_100_normal_hours,median_lead_time_hours,lead_time_iqr_hours,events_with_early_lead_time
+robust_latency_baseline,0.8,0.2,0.36363636363636365,0.5000000000000001,0.6042088238658818,0.7098102759622368,56,0.9150326797385622,9.5,7.0,8
+isolation_forest,1.0,0.125,0.36363636363636365,0.5333333333333333,0.6798479774198354,0.7996128358750907,70,1.1437908496732025,11.0,10.0,5
+reactive_threshold,0.725,0.0,1.0,0.8405797101449275,0.6705941757066297,0.7550722244916485,0,0.0,,,0
