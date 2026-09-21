@@ -1,0 +1,7 @@
+scenario,episodes,mean_latency_delta,mean_error_rate_delta
+capacity_plus_20,45,0.0,0.0
+db_latency_minus_20,45,-14.332208222222219,0.0
+db_latency_plus_20,45,14.332208222222219,0.6
+no_change,45,0.0,0.0
+traffic_plus_20,45,69.70365719523807,1.5999999999999994
+traffic_plus_20_capacity_plus_20,45,0.0,0.0
