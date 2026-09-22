@@ -73,6 +73,19 @@ Rolling-origin evaluation was used for the test period. Test observations may be
 
 The evaluation uses the continuous hourly series, including zero-request hours.
 
+### Target Construction
+
+The hourly target is constructed from every raw `gmt_create` record in
+`lora_request_trace.csv`. No filtering is applied to `predict_type` or
+`predict_status`; all raw records are pooled into one aggregate hourly
+workload series. Each timestamp is floored to the hour, records are counted
+per hour, and missing hours within the observed range are represented as zero
+request counts.
+
+This construction assumes that each raw source row represents a distinct
+request-arrival event. The available source fields establish inclusion of all
+rows, but that row-level event semantics could not be independently confirmed
+from the released source documentation.
 ---
 
 ## 4. Primary Experiment Metadata
@@ -80,7 +93,7 @@ The evaluation uses the continuous hourly series, including zero-request hours.
 The authoritative primary Dataset B run is:
 
 ```text
-Run ID: 20260917T145858Z
+Run ID: 20260921T155024Z
 ```
 
 The experiment uses the GenTD26 aggregate hourly request-count series.
@@ -100,7 +113,7 @@ The experiment records run metadata, model-selection metrics, test metrics, and 
 Primary result directory:
 
 ```text
-results/20260917T145858Z/
+results/20260921T155024Z/
 ```
 
 ---
@@ -217,7 +230,7 @@ Consequently, this comparison represents a comparison of two tuned feature confi
 Authoritative ablation run:
 
 ```text
-20260917T152404Z
+20260921T155137Z
 ```
 
 The selected configurations were:
@@ -281,7 +294,7 @@ It does not establish that `lag_24` is generally harmful or unnecessary for work
 The primary Dataset B diagnostic figures are stored at:
 
 ```text
-results/20260917T145858Z/dataset_b_gentd26/figures/
+results/20260921T155024Z/dataset_b_gentd26/figures/
 ```
 
 The figure set includes:
@@ -347,7 +360,7 @@ The results have the following limitations:
 ### Primary Dataset B run
 
 ```text
-results/20260917T145858Z/
+results/20260921T155024Z/
 ```
 
 The primary run contains:
@@ -360,13 +373,13 @@ The primary run contains:
 ### Dataset B ablation
 
 ```text
-results/20260917T152404Z/
+results/20260921T155137Z/
 ```
 
 The ablation comparison is available at:
 
 ```text
-results/20260917T152404Z/dataset_b_gentd26_ablation/comparison_metrics.csv
+results/20260921T155137Z/dataset_b_gentd26_ablation/comparison_metrics.csv
 ```
 
 The ablation run contains the results for the full-feature and `RF_WithoutLag24` variants.
@@ -374,7 +387,7 @@ The ablation run contains the results for the full-feature and `RF_WithoutLag24`
 ### Diagnostic figures
 
 ```text
-results/20260917T145858Z/dataset_b_gentd26/figures/
+results/20260921T155024Z/dataset_b_gentd26/figures/
 ```
 
 ### Implementation
@@ -416,13 +429,13 @@ The external forecasting tests cover:
 The dedicated external forecasting tests passed:
 
 ```text
-3 passed
+5 passed
 ```
 
 The full repository test suite passed:
 
 ```text
-10 passed, 4 warnings
+24 passed, 4 warnings
 ```
 
 These tests provide targeted checks for selected leakage and evaluation behaviors. They do not prove that every possible leakage pathway is absent.

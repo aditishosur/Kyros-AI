@@ -1,3 +1,4 @@
+
 from pathlib import Path
 
 import pandas as pd
@@ -9,50 +10,14 @@ OUTPUT_PATH = Path(
     "gentd26_hourly_request_counts.csv"
 )
 
-def aggregate_hourly_request_counts(
-    timestamps: pd.Series,
-) -> pd.DataFrame:
-    hourly = (
-        timestamps
-        .dt.floor("h")
-        .value_counts()
-        .sort_index()
-        .rename("request_count")
-        .to_frame()
-    )
 
-    full_index = pd.date_range(
-        start=hourly.index.min(),
-        end=hourly.index.max(),
-        freq="h",
-    )
-
-    hourly = hourly.reindex(
-        full_index,
-        fill_value=0,
-    )
-
-    hourly.index.name = "timestamp"
-
-    return hourly.reset_index()
-
-
-def main() -> None:
-    df = pd.read_csv(RAW_PATH)
-
-    required_columns = {
-        "gmt_create",
-    }
-
-    missing = required_columns - set(df.columns)
-
-    if missing:
-        raise ValueError(
-            f"Missing required columns: {sorted(missing)}"
-        )
+def aggregate_hourly_request_counts(raw: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate every raw gmt_create record into continuous hourly counts."""
+    if "gmt_create" not in raw.columns:
+        raise ValueError("Missing required column: gmt_create")
 
     timestamps = pd.to_datetime(
-        df["gmt_create"],
+        raw["gmt_create"],
         errors="coerce",
     )
 
@@ -61,9 +26,6 @@ def main() -> None:
             "Found invalid or missing gmt_create timestamps."
         )
 
-    # Aggregate every raw request-arrival record into hourly counts.
-    # All request types and predict_status values are intentionally included.
-    # No filtering is applied.
     hourly = (
         timestamps
         .dt.floor("h")
@@ -73,7 +35,6 @@ def main() -> None:
         .to_frame()
     )
 
-    # Reindex to a continuous hourly calendar.
     full_index = pd.date_range(
         start=hourly.index.min(),
         end=hourly.index.max(),
@@ -86,24 +47,23 @@ def main() -> None:
     )
 
     hourly.index.name = "timestamp"
+    return hourly.reset_index()
 
-    output = hourly.reset_index()
+
+def main() -> None:
+    raw = pd.read_csv(RAW_PATH)
+
+    # All raw rows are included. No filtering is applied to
+    # predict_type or predict_status.
+    output = aggregate_hourly_request_counts(raw)
 
     OUTPUT_PATH.parent.mkdir(
         parents=True,
         exist_ok=True,
     )
+    output.to_csv(OUTPUT_PATH, index=False)
 
-    output.to_csv(
-        OUTPUT_PATH,
-        index=False,
-    )
-
-    print(f"Input rows: {len(df):,}")
-    print(
-        f"Input time range: "
-        f"{timestamps.min()} -> {timestamps.max()}"
-    )
+    print(f"Input rows: {len(raw):,}")
     print(f"Hourly bins: {len(output):,}")
     print(
         f"Total requests in hourly series: "
