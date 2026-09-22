@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from backend.services.rca_rules import determine_root_cause
 from sqlalchemy.orm import Session
 
 from backend import models
@@ -20,18 +20,11 @@ def root_cause(db: Session, api_id: int) -> dict:
     errors = round(metrics.get("error_rate", 0), 1)
     risk = metrics.get("risk_score", 0)
 
-    if traffic > 25 and db_latency > 15:
-        cause = "Database pressure caused by traffic surge"
-        recommendation = "Increase service capacity and inspect database saturation before the next traffic peak."
-    elif db_latency > 25:
-        cause = "Database latency is the primary degradation driver"
-        recommendation = "Investigate slow queries, connection pool saturation and database resource limits."
-    elif errors > 5:
-        cause = "Application error burst"
-        recommendation = "Review recent deploys and error logs for elevated 5xx responses."
-    else:
-        cause = "Elevated performance risk"
-        recommendation = "Continue monitoring and validate capacity headroom."
+    cause, recommendation = determine_root_cause(
+    traffic=traffic,
+    db_latency=db_latency,
+    errors=errors,
+)
 
     severity = "Critical" if risk >= 70 else "High" if risk >= 55 else "Medium" if risk >= 35 else "Low"
     chain = [
