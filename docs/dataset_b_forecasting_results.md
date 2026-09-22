@@ -344,6 +344,7 @@ The results have the following limitations:
 
 - The dataset contains recurring zero-request periods.
 - The hourly series includes long zero-demand intervals.
+- The hour and day_of_week features are derived from released GenTD26 timestamps. Their use assumes that timestamp ordering and calendar periodicity remain meaningful after anonymization or timestamp shifting. This assumption could not be independently verified from the available source documentation and is therefore a limitation of the external evaluation.
 - Per-target-hour sample sizes are small, generally approximately four to five observations.
 - The timestamps are anonymized or shifted.
 - sMAPE is difficult to interpret when actual request counts are zero or close to zero.
