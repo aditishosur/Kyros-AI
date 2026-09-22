@@ -431,6 +431,22 @@ The result does not establish that 24-hour lag features are generally unnecessar
 
 ## 7. Dataset B
 
+### Dataset B target definition
+
+The Dataset B target is an aggregate hourly request count. All raw
+records are included regardless of `predict_type` or `predict_status`;
+no filtering is applied, and all request types and statuses are pooled.
+
+Request-arrival timestamps are grouped by flooring `gmt_create` to the
+hour. Missing hours within the observed range are represented as zero
+requests.
+
+The assumption that each raw record represents one request-arrival
+event could not be independently verified from the available source
+documentation. Therefore, the target definition should be interpreted
+as a count of raw records grouped by hourly `gmt_create` timestamps,
+rather than as a confirmed count of unique request-arrival events.
+
 ### 7.1 Dataset Overview
 
 Dataset B uses the GenTD26 trace from the Alibaba Cluster Data repository.
@@ -1042,6 +1058,11 @@ Dataset B provides external validation using a real-world GenAI serving trace, b
 
 - The trace represents a specific serving workload.
 - Timestamps are anonymized or shifted.
+- The `hour` and `day_of_week` features assume that timestamp ordering
+  and calendar periodicity remain meaningful despite anonymization or
+  timestamp shifting. This assumption could not be independently
+  verified from the available source documentation and remains a
+  limitation of external validation.
 - The target is constructed through hourly request aggregation.
 - Zero-request hours are included in the continuous hourly series.
 - The trace has irregular raw inter-event gaps.

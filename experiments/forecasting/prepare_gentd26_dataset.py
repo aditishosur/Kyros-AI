@@ -9,6 +9,33 @@ OUTPUT_PATH = Path(
     "gentd26_hourly_request_counts.csv"
 )
 
+def aggregate_hourly_request_counts(
+    timestamps: pd.Series,
+) -> pd.DataFrame:
+    hourly = (
+        timestamps
+        .dt.floor("h")
+        .value_counts()
+        .sort_index()
+        .rename("request_count")
+        .to_frame()
+    )
+
+    full_index = pd.date_range(
+        start=hourly.index.min(),
+        end=hourly.index.max(),
+        freq="h",
+    )
+
+    hourly = hourly.reindex(
+        full_index,
+        fill_value=0,
+    )
+
+    hourly.index.name = "timestamp"
+
+    return hourly.reset_index()
+
 
 def main() -> None:
     df = pd.read_csv(RAW_PATH)
