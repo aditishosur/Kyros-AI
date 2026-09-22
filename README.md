@@ -4,372 +4,204 @@
 
 > 🏆 **🥇 1st Place — College Hackathon 2026**
 
-**PulseOps** is an AI-powered API intelligence and operations platform that transforms raw API telemetry into actionable operational insight.
+PulseOps is an API-operations intelligence platform that combines monitoring, workload forecasting, anomaly and early-warning analysis, transparent rule-based diagnosis, and scenario-based intervention estimation.
 
-Instead of simply monitoring whether an API is up or down, PulseOps helps teams understand **what is happening, what is likely to happen next, why it is happening, and what they should do about it.**
+It is designed to help teams understand **what is happening, what may happen next, why it may be happening, and what could happen under a possible intervention.**
 
-### 🔄 MONITOR → 🔮 PREDICT → 🧠 EXPLAIN → 🧪 SIMULATE → 💡 RECOMMEND
+### 🔄 MONITOR → FORECAST → DETECT → DIAGNOSE → SIMULATE
 
 ---
 
 ## 🏆 Hackathon Achievement
 
-PulseOps was developed for a **college-organized hackathon** and won **🥇 1st Place** among the participating teams.
+PulseOps was developed as a college hackathon MVP and won **🥇 1st Place** among the participating teams.
 
-The project demonstrated an end-to-end implementation combining:
+The project combines Python, FastAPI, SQL-based telemetry storage, machine-learning forecasting, anomaly detection, rule-based diagnosis, scenario simulation, Streamlit, Docker, Kubernetes, and GitHub Actions.
 
-* 🤖 Machine Learning
-* ⚡ FastAPI REST APIs
-* 🗄️ SQL Database
-* 📊 Data Visualization
-* 🐳 Docker
-* ☸️ Kubernetes
-* 🔄 GitHub Actions CI/CD
-* 🧠 Explainable AI
-* 🧪 Predictive simulation
-
-The focus was not simply on building another monitoring dashboard, but on demonstrating how **AI can transform API observability into proactive operational intelligence.**
+The research contribution is an empirical evaluation of a lightweight integrated API-operations intelligence pipeline—not a claim of a novel machine-learning algorithm.
 
 ---
 
-## 🚀 What PulseOps Does
-
-PulseOps provides an end-to-end intelligence layer for API operations.
-
-### 📡 1. MONITOR
-
-Continuously analyze API telemetry and operational metrics such as:
-
-* 📊 Request volume
-* ⏱️ Response latency
-* ❌ Error rates
-* 🔢 Status codes
-* 🚦 Throughput
-* 💚 API health
-* 📈 Traffic patterns
-
-PulseOps establishes visibility into the current state of the API ecosystem.
-
-### 🔮 2. PREDICT
-
-Machine-learning models analyze historical and current behavior to identify potential problems **before they become incidents**.
-
-PulseOps can provide:
-
-* ⚠️ Failure-risk scores
-* 📈 Traffic forecasts
-* 🚨 Anomaly detection
-* 📉 Performance degradation predictions
-* ❤️ API health predictions
-
-### 🧠 3. EXPLAIN
-
-When PulseOps identifies a problem or elevated risk, it goes beyond the prediction.
-
-The system analyzes contributing signals to provide:
-
-* 🔍 Root-cause analysis
-* 🎯 Important contributing factors
-* 📊 Explainable risk indicators
-* 📝 Incident context
-* 💬 Evidence behind predictions
-
-### 🧪 4. SIMULATE
-
-PulseOps provides a **What-If simulation layer** for exploring potential operational scenarios.
-
-Teams can simulate changes such as:
-
-* 📈 Increased traffic
-* ❌ Higher error rates
-* ⏱️ Increased latency
-* 🖥️ Capacity changes
-* 💥 Failure scenarios
-
-### 💡 5. RECOMMEND
-
-Based on observed behavior, predictions, explanations, and simulations, PulseOps produces actionable recommendations.
-
-The goal is to move from:
-
-> ❌ **“Something is wrong.”**
-
-to:
-
-> ✅ **“Something is likely to go wrong, this is why, this is what may happen, and this is what you should consider doing.”**
-
----
-
-# ✨ Core Features
-
-### 📡 API Health & Operations Monitoring
-
-A centralized operations view provides visibility into API health and system behavior.
-
-**Key metrics include:**
-
-* 📊 Total requests
-* 🚨 Error rate
-* ⏱️ Average latency
-* 🚦 Throughput
-* 💚 API availability
-* ⚠️ Health/risk scores
-* 🔥 Recent incidents
-
-### 🤖 Predictive Analytics
-
-PulseOps uses machine-learning models to identify patterns in API behavior.
-
-The predictive layer supports:
-
-* 🔮 Risk prediction
-* 📈 Traffic forecasting
-* 🚨 Anomaly identification
-* 📉 Performance trend analysis
-
-### 🔍 Explainable Root-Cause Analysis
-
-PulseOps identifies the signals most strongly associated with an incident or elevated risk, helping operators understand **why** a prediction was made.
-
-### 🧪 What-If Simulation
-
-Operators can explore hypothetical situations before they occur.
-
-> **What happens if traffic increases by 40%?**
-
-PulseOps evaluates the scenario and presents the expected operational impact.
-
-### 💡 Intelligent Recommendations
-
-PulseOps converts analytical output into operational recommendations informed by:
-
-* 💚 Current API health
-* 🔮 Predicted risk
-* 📜 Historical behavior
-* 🔍 Root-cause signals
-* 🧪 Simulation results
-
----
-
-# 🏗️ Architecture
+## 🔬 Research Story
 
 ```text
-📊 Synthetic / Historical API Data
-              ↓
-        📥 Data Ingestion
-              ↓
-        🗄️ SQL Database
-              ↓
-      ⚙️ Feature Engineering
-              ↓
-       🤖 ML / Analytics Layer
-              ↓
-      ┌────────┼─────────┐
-      ↓        ↓         ↓
-   🔮 Predict 🧠 Explain 🧪 Simulate
-      └────────┼─────────┘
-              ↓
-        💡 Recommendation
-              ↓
-        ⚡ FastAPI REST API
-              ↓
-          🖥️ Frontend
+Operational Telemetry
+        ↓
+    FORECAST  → What workload is likely next?
+        ↓
+     DETECT   → Is degradation emerging, and how early?
+        ↓
+    DIAGNOSE  → What known cause is most consistent?
+        ↓
+    SIMULATE  → What could happen under an intervention?
+        ↓
+Comparison with reactive threshold monitoring
 ```
 
----
-
-# 🛠️ Technology Stack
-
-| Layer                  | Technology     |
-| ---------------------- | -------------- |
-| 🐍 Backend             | Python 3.11+   |
-| ⚡ API                  | FastAPI        |
-| ✅ Validation           | Pydantic       |
-| 🗄️ Database ORM       | SQLAlchemy     |
-| 🗃️ Database           | SQLite         |
-| 🤖 ML                  | scikit-learn   |
-| 🐼 Data Processing     | pandas         |
-| 🔢 Numerical Computing | NumPy          |
-| 📊 Visualization       | Plotly         |
-| 🖥️ Frontend           | Streamlit      |
-| 🐳 Containerization    | Docker         |
-| ☸️ Orchestration       | Kubernetes     |
-| 🔄 CI/CD               | GitHub Actions |
+The system is evaluated using controlled synthetic telemetry and independent real/open telemetry where the dataset semantics support the relevant task.
 
 ---
 
-# ⚡ API
+## 📡 Monitor
 
-PulseOps exposes its intelligence capabilities through REST APIs using FastAPI.
+The monitoring layer provides visibility into:
 
-The API provides access to:
+- Request volume
+- Response latency
+- Error rates
+- Status codes
+- Throughput
+- API health indicators
+- Recent incidents
 
-* 📡 API telemetry
-* 💚 API health
-* 🔮 Predictions
-* 📈 Forecasts
-* 🔍 Root-cause analysis
-* 🧪 What-if simulation
-* 💡 Recommendations
+The existing FastAPI and Streamlit application serves as the integration and demonstration layer. Research metrics are generated from offline experiment artifacts.
 
-Interactive API documentation:
+---
+
+## 🔮 Forecast
+
+The forecasting workstream evaluates whether workload forecasts can outperform simple temporal baselines on temporally held-out telemetry.
+
+### Models
+
+- Persistence / last-value baseline
+- Seasonal-naive baseline using a 24-hour seasonal period
+- Random Forest Regressor
+
+### Evaluation
+
+- Horizons: **1h, 6h, and 12h**
+- Primary metrics: **MAE and RMSE**
+- Secondary metrics: **sMAPE and R² where meaningful**
+- Chronological train/validation/test splits
+- Validation-only model selection
+- Leakage-focused tests
+- Offline, reproducible experiment runs
+
+### Dataset B: GenTD26
+
+The GenTD26 evaluation uses `lora_request_trace.csv` to construct a continuous hourly request-count series.
+
+- Raw observations: 26,823
+- Continuous hourly bins: 554
+- Nonzero hourly bins: 370
+- Zero-request hourly bins: 184
+- Primary run: `20260921T155024Z`
+- Ablation run: `20260921T155137Z`
+
+The Dataset B analysis documents limitations involving anonymized or shifted timestamps, zero-request periods, limited temporal coverage, and independently tuned ablation configurations.
+
+---
+
+## 🧠 Detect
+
+The anomaly and early-warning workstream evaluates whether degradation can be detected before reactive thresholds.
+
+The planned comparison includes:
+
+- A robust univariate threshold baseline
+- Isolation Forest-based anomaly scoring
+
+Evaluation focuses on event recall, PR-AUC where applicable, false-alert rate, warning lead time, and event-level precision/F1 where meaningful.
+
+Synthetic telemetry and scenario labels are explicitly identified as such.
+
+---
+
+## 🔍 Diagnose
+
+PulseOps uses transparent, rule-based, dependency-inspired reasoning to rank known possible causes.
+
+This component is **not described as causal discovery or causal AI**.
+
+Evaluation focuses on:
+
+- Top-1 accuracy
+- Top-2 accuracy
+- Confusion matrices
+- Representative explanation audits
+- Performance across supported scenario types
+
+---
+
+## 🧪 Simulate
+
+The simulation layer is a scenario/intervention simulator for exploring possible operational changes, including:
+
+- Traffic increases or decreases
+- Capacity changes
+- Database-latency changes
+
+Evaluation focuses on directional accuracy, delta MAE, and intervention-ranking agreement against independently generated or held-out outcomes.
+
+The simulator is **not described as a causal counterfactual model**. Conclusions are limited to tested scenarios and parameter ranges.
+
+---
+
+## 🏗️ Architecture
 
 ```text
-http://localhost:8000/docs
+Synthetic / Real Operational Telemetry
+                ↓
+          Data Ingestion
+                ↓
+           SQL Storage
+                ↓
+        Feature Engineering
+                ↓
+       Offline Experiment Layer
+                ↓
+ ┌──────────┬──────────┬──────────┬──────────┐
+ ↓          ↓          ↓          ↓
+Forecast  Detect    Diagnose  Simulate
+ └──────────┴──────────┴──────────┴──────────┘
+                ↓
+      Metrics, Predictions,
+       Alerts, Explanations
+                ↓
+       FastAPI Integration API
+                ↓
+        Streamlit Demo Layer
 ```
 
 ---
 
-# 🔄 Data Pipeline
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.11+ |
+| API | FastAPI |
+| Validation | Pydantic |
+| Database ORM | SQLAlchemy |
+| Database | SQLite |
+| Machine Learning | scikit-learn |
+| Data Processing | pandas, NumPy |
+| Visualization | Plotly |
+| Frontend | Streamlit |
+| Containerization | Docker |
+| Orchestration | Kubernetes |
+| CI/CD | GitHub Actions |
+
+---
+
+## 📁 Research Artifacts
 
 ```text
-📄 Synthetic CSV
-      ↓
-📥 Data Ingestion
-      ↓
-✅ Validation / Transformation
-      ↓
-🗄️ SQL Database
-      ↓
-⚙️ Feature Engineering
-      ↓
-🤖 ML Models
-      ↓
-📊 Predictions & Analytics
+results/
+└── <run_id>/
+    ├── metrics/
+    ├── predictions/
+    └── figures/
 ```
+
+Research runs should record the run ID, Git commit hash, configuration, seed, input hash/version, UTC timestamp, and environment information where applicable.
+
+Every paper result should be traceable to a stored result artifact.
 
 ---
 
-# 📁 Project Structure
-
-```text
-pulseops/
-│
-├── backend/
-│   ├── api/
-│   ├── services/
-│   ├── models/
-│   ├── schemas/
-│   └── ...
-│
-├── data/
-│   └── *.csv
-│
-├── ml/
-│   ├── models/
-│   ├── prediction/
-│   ├── forecasting/
-│   └── ...
-│
-├── analytics/
-│   ├── root_cause/
-│   └── ...
-│
-├── simulator/
-│   └── ...
-│
-├── frontend/
-│   └── ...
-│
-├── tests/
-│   └── ...
-│
-├── 🐳 Dockerfile
-├── 🐳 docker-compose.yml
-├── 📦 requirements.txt
-└── 📖 README.md
-```
-
----
-
-# 💻 Running PulseOps Locally
-
-### 1️⃣ Clone the repository
-
-```bash
-git clone <repository-url>
-cd pulseops
-```
-
-### 2️⃣ Create a virtual environment
-
-**Windows:**
-
-```bash
-python -m venv venv
-venv\Scripts\activate
-```
-
-**Linux / macOS:**
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3️⃣ Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4️⃣ 📥 Initialize the Data
-
-Run the project's data ingestion / initialization process to load the supplied CSV telemetry into the SQL database.
-
-### 5️⃣ ⚡ Start the FastAPI Backend
-
-```bash
-uvicorn backend.main:app --reload
-```
-
-API:
-
-```text
-http://localhost:8000
-```
-
-Swagger:
-
-```text
-http://localhost:8000/docs
-```
-
-### 6️⃣ 🖥️ Start the Frontend
-
-```bash
-streamlit run frontend/app.py
-```
-
----
-
-# 🐳 Docker
-
-```bash
-docker compose up --build
-```
-
----
-
-# ☸️ Kubernetes
-
-Typical deployment flow:
-
-```text
-🐳 Docker Image
-      ↓
-📦 Container Registry
-      ↓
-☸️ Kubernetes Deployment
-      ↓
-🌐 Kubernetes Service
-      ↓
-⚡ PulseOps API
-```
-
----
-
-# 🧪 Testing
+## 🧪 Testing and Reproducibility
 
 Run the test suite:
 
@@ -377,103 +209,32 @@ Run the test suite:
 pytest
 ```
 
----
+The forecasting workstream includes checks for chronological evaluation, leakage risks, forecasting aggregation, zero-filled hourly target construction, and prediction stability when future actual values are modified.
 
-# 🔄 CI/CD
-
-GitHub Actions automates the development pipeline:
+The forecasting implementation was verified with:
 
 ```text
-📤 Git Push
-     ↓
-⚙️ GitHub Actions
-     ↓
-📦 Install Dependencies
-     ↓
-🧪 Run Tests
-     ↓
-🐳 Build Docker Image
-     ↓
-🚀 Deployment Pipeline
+24 passed, 4 warnings
 ```
 
----
-
-# 🆚 Why PulseOps?
-
-Traditional API monitoring tells engineering teams **what happened**.
-
-PulseOps answers the questions that come next:
-
-| 🔵 Traditional Monitoring       | 🟠 PulseOps                          |
-| ------------------------------- | ------------------------------------ |
-| What happened?                  | What is happening?                   |
-| What is the current error rate? | What is likely to happen next?       |
-| Is the API unhealthy?           | How serious is the risk?             |
-| An incident occurred.           | Why did it happen?                   |
-| A metric changed.               | What happens if the trend continues? |
-| Something is wrong.             | What should we consider doing?       |
-
-PulseOps turns API observability into **predictive operational intelligence**.
+A representative run should be reproducible by another teammate before its results are treated as final.
 
 ---
 
-# 🏆 Hackathon MVP
+## 🔒 Research Boundaries
 
-PulseOps was created as a hackathon MVP with a focus on delivering a complete, demonstrable intelligent operations platform within a highly constrained development window.
-
-### 🎯 Required Capabilities
-
-* 🐍 Python development
-* 🗄️ SQL database
-* 🤖 Machine learning
-* 📊 Data visualization
-* ⚡ FastAPI REST APIs
-* 🐳 Docker
-* ☸️ Kubernetes deployment
-* 🐙 GitHub repository
-* 🔄 GitHub Actions CI/CD
-
-### 🥇 Result
-
-**PulseOps won 1st place at the college-organized hackathon. 🏆**
-
-The project demonstrated a complete intelligence loop:
-
-```text
-📡 MONITOR
-     ↓
-🔮 PREDICT
-     ↓
-🧠 EXPLAIN
-     ↓
-🧪 SIMULATE
-     ↓
-💡 RECOMMEND
-```
+- Synthetic telemetry is clearly distinguished from real/open telemetry.
+- Time-series evaluation uses temporal splits.
+- Thresholds, model choices, and hyperparameters are selected using training/validation data only.
+- Final test data is not used for tuning.
+- Risk scoring is described as rule-based or heuristic.
+- Diagnosis is described as rule-based, dependency-inspired reasoning.
+- Simulation is described as scenario/intervention simulation.
+- Negative or weak results are retained and used to narrow claims.
+- The Streamlit application remains a demonstration layer; paper evidence comes from reproducible experiment artifacts.
 
 ---
 
-# 🌐 Product Vision
+## ⚡ PulseOps
 
-PulseOps is built around the idea that modern API operations should move from **reactive monitoring to proactive intelligence**.
-
-Rather than waiting for an API to fail and investigating the incident afterward, PulseOps uses telemetry, machine learning, explainability, and simulation to help teams **anticipate operational problems and make better decisions.**
-
----
-
-<div align="center">
-
-# ⚡ PulseOps
-
-### Predictive API Intelligence
-
-🏆 **🥇 1st Place — College Hackathon 2026**
-
-**Monitor what is happening.**
-**Predict what comes next.**
-**Explain why.**
-**Simulate what could happen.**
-**Recommend what to do.**
-
-</div>
+**Monitor what is happening. Forecast what comes next. Detect emerging degradation. Diagnose supported causes. Simulate possible interventions.**
